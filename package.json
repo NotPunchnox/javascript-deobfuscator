@@ -2,10 +2,10 @@
   "name": "javascript-deobfuscator",
   "version": "1.0.0",
   "description": "A simple coffeescript program to unobfuscate javascript",
-  "main": "main.js",
+  "main": "main.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "js": "node main.js",
+    "start": "coffee main.coffee"
   },
   "repository": {
     "type": "git",
