@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/NotPunchnox/javascript-deobfuscator#readme",
   "dependencies": {
+    "cloudscraper": "^4.6.0",
     "fs": "0.0.1-security",
     "js-beautify": "1.14.0"
   }
