@@ -15,8 +15,13 @@ start ( coffeescript ):
 `coffee main.coffee` or `npm run start`
 
 1: ( your code ):
+
 ![ScreenShot](/images/capture.png)
+
 2: ( shell ):
+
 ![ScreenShot](/images/capture2.png)
+
 3: ( ./output/result.js ):
+
 ![ScreenShot](/images/capture3.png)
