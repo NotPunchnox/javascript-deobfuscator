@@ -1,0 +1,30 @@
+{
+  "name": "javascript-deobfuscator",
+  "version": "1.0.0",
+  "description": "A simple coffeescript program to unobfuscate javascript",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotPunchnox/javascript-deobfuscator.git"
+  },
+  "keywords": [
+    "js",
+    "obfuscator",
+    "unobfuscate",
+    "punchnox"
+  ],
+  "author": "punchnox",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NotPunchnox/javascript-deobfuscator/issues"
+  },
+  "homepage": "https://github.com/NotPunchnox/javascript-deobfuscator#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "js-beautify": "1.14.0"
+  }
+}
