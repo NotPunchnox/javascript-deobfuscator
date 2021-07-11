@@ -11,8 +11,13 @@ start:
 `npm run start` or `node .`
 
 1: ( your code ):
+
 ![ScreenShot](/images/capture.png)
+
 2: ( shell ):
+
 ![ScreenShot](/images/capture2.png)
+
 3: ( ./output/result.js ):
+
 ![ScreenShot](/images/capture3.png)
