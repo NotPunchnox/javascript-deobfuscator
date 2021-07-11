@@ -1,54 +1,43 @@
 const fs = require('fs'),
-      beautifier = require('js-beautify').js
+    beautifier = require('js-beautify').js
 
-    wrapchain = function(str) {
-        if(str.includes('\n') || (str.includes('"') && str.includes("'"))) return '`';
-        return !str.includes("'") ? "'" : '"';
-    },
-
-    chain = function(str) {
-        str = str.replace(
-            /(?<=(\b(return|throw|in|of|new|delete|default|function|async|await|get|set)|\{|\*))\s*\[('|")((?![^_a-zA-Z$])[\w$]*)\3\]\s*\(/g,
-            ' $4( '
-        )
-        str = str.replace(/(?<=((?![^_a-zA-Z$])[\w$]*)|\]|\))\[('|")((?![^_a-zA-Z$])[\w$]*)\2\]/gi, ' .$3 ');
-        return str;
-    },
-
-    reg = function(str, q) {
-      return str.replace(new RegExp('[\\\\' + q + '\\n]', 'g'), '\\$&').replace(/-/g, '\\x2d')
-    }
+wrapchain = function (str) {
+    if (str.includes('\n') || (str.includes('"') && str.includes("'"))) return '`'
+    return !str.includes("'") ? "'" : '"'
+}
 
 function decode(source, options) {
-    const detectPattern = /^(var|const|let)\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/;
-    let _var = source.match(detectPattern);
+    let s = source.match(/^(var|const|let)\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/)
 
-    if(!_var || _var.length !== 3) throw 'Not matched';
+    if (!s || s.length !== 3) throw 'Not matched'
 
-    const _name = _var[2],
-        keyPattern = new RegExp(_name.replace(/\$/g, '\\$') + '\\[(\\d+)\\]', 'g');
-    let result = source.replace(detectPattern, '');
+    const var_ = s[2],
+        key = new RegExp(var_.replace(/\$/g, '\\$') + '\\[(\\d+)\\]', 'g')
+    let result = source.replace(/^(var|const|let)\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/, '')
 
-    _var = _var[0].replace(/[\s\S]*?\[/, '[');
-    _var = eval(_var);
+    s = s[0].replace(/[\s\S]*?\[/, '[')
+    s = eval(s)
 
 
-    result = result.split(';');
-    result = result.map((piece) =>
-        piece.replace(keyPattern, function(key, index) {
-            const item = _var[index],
-                q = wrapchain(item);
+    result = result.split(';')
+    result = result.map((p) =>
+        p.replace(key, function (_, index) {
+            const item = s[index],
+                q = wrapchain(item)
 
-            return q + reg(item, q) + q;
+            return q + item.replace(new RegExp('[\\\\' + q + '\\n]', 'g'), '\\$&').replace(/-/g, '\\x2d') + q
         })
-    );
+    )
     result = result.join(';')
-    result = chain(result)
+    result = result.replace(/(?<=(\b(return|throw|in|of|new|delete|default|function|async|await|get|set)|\{|\*))\s*\[('|")((?![^_a-zA-Z$])[\w$]*)\3\]\s*\(/g,' $4( ')
+    result = result.replace(/(?<=((?![^_a-zA-Z$])[\w$]*)|\]|\))\[('|")((?![^_a-zA-Z$])[\w$]*)\2\]/gi, ' .$3 ')
+
     return {
         input: source,
         output: result
-    };
+    }
 }
+
 console.clear()
 console.log('\x1b[36mPlease wait...\x1b[0m')
 fs.writeFileSync('./output/result.js', beautifier(decode(fs.readFileSync('input.js', 'utf8')).output))
